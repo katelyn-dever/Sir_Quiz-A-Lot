@@ -29,15 +29,50 @@ def QuizB():
 
 def showAll():
     #currently functioning but only in shell, will eventually have its own GUI in a new window
-    print(terms)
-    
+    #here, let me help with that :) -E
+    showAllWindow = Toplevel()
+    showAllWindow.title("All Terms Entered")
+    showAllWindow.iconbitmap('C:/python/sqal/sqal.ico')
+    closeButton = Button(showAllWindow, text="Close",command=showAllWindow.destroy)
+    closeButton.grid(row=2,column=2,columnspan=1,padx=10,pady=10)
+    showAllLabel = Label(showAllWindow, text=terms)
+    showAllLabel.grid(row=1, column=1, columnspan=2, pady=20, padx=50)
+
+### This is all stuff I couldn't make work. I left it for later. Or not.
+### As it is, the new window does display the pairs but it has the 
+### {} and : and "" and all included. I was trying to clean it up and 
+### make it pretty. but I at least have it functional if you want to
+### just come back to this later. - E
+    # variables for looping
+    #d = ""
+    #pairs = list()
+    #i = 0
+    # loop to display dict:
+    #for k,v in terms.items():
+    #	showAllMsg = Message(showAllWindow,text=(k,v))
+    #	showAllMsg.grid(row=1, column=1, columnspan=2,pady=20,padx=20)
+    #d = d + str(k,v)
+    #	i + 1
+
+def rootExit():
+	#prompts to save upon closing (once save feature added, until then it just warns user to save first)
+	closeWindow = Toplevel()
+	closeWindow.title("*Unsaved Changes*")
+	closeWindow.iconbitmap('C:/python/sqal/sqal.ico')
+	exitLabel = Label(closeWindow, text="Are you sure you want to exit? Please make sure to save all changes.")
+	exitLabel.grid(row=0,column=0,columnspan=3,pady=20,padx=20)
+	exitButtonFinal = Button(closeWindow, text="Exit",command=root.destroy)
+	exitButtonFinal.grid(row=2,column=3,columnspan=1,pady=10,padx=10)
+	backToProgramButton = Button(closeWindow, text="Go back to my quiz",command=closeWindow.destroy)
+	backToProgramButton.grid(row=2,column=2,columnspan=1,pady=10,padx=10)
+
 
 ###BEGIN GUI BUILD###
 
 #Window creation and overall styles
 
 root.title("Sir Quiz-A-Lot")
-root.iconbitmap('C:/Users/katel/Documents/sqal.ico')
+root.iconbitmap('C:/python/sqal/sqal.ico')
 
 
 ## ATTEMPT at making a file toolbar to save and open files.  doesn't work yet
@@ -49,7 +84,6 @@ root.iconbitmap('C:/Users/katel/Documents/sqal.ico')
 #subMenu.add_command(label="New Project...", command=doNothing)
 #subMenu.add_command(label="Save", command = doNothing)
 #subMenu.add_separator()
-
 
 #title at top of GUI     
 introLabel = Label(root,
@@ -123,7 +157,7 @@ showAllButton.grid(row = 7, columnspan = 3, column = 1)
 exitButton = Button(root,
                        text = "Exit",
                        padx = 10, pady = 10,
-                       command=addTerm)
+                       command=rootExit)
 exitButton.grid(row = 8, columnspan = 3, column = 1)
 
 
