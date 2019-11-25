@@ -1,10 +1,16 @@
-# Sir Quiz-A-Lot desktop application
-# I didn't delete any previous work, I just couldn't use "input" and things like that with the GUI
-# It's all at the bottom commented out.
-# Since we aren't using version control, try to comment out my code instead of deleting..
-# we can clean it up later.
-# Was also thinking about finding a way to put all of the repetitive code like padx pady font and color into variables or
-# a function so that it wont be so repetitive. That can be a stretch goal. - K
+### Sir Quiz-A-Lot desktop application ###
+### ITEC 3250 - Katelyn Dever, Elijah Cliett, Brianna Young ###
+
+
+
+# GUI design
+# Colors from background image:
+# Offwhite: #FFFEFC
+# Teal: #00AEC1
+# Cerulean: #07EA7
+# Orange: #ED6A00
+# Reddish: #CE2500
+# Dark Gray: #494949
 
 import math
 import random
@@ -12,10 +18,16 @@ import random
 from tkinter import *
 
 root = Tk()
-
-###FUNCTIONS###
-#global dictionary?  is this dangerous?
 terms = dict()
+windowSize = "750x600"
+
+### FUNCTIONS ###
+
+
+
+
+def callback():
+    print("this doesn't work yet!")
 
 def addTerm():
     terms.update({termEntry.get():defEntry.get()})
@@ -24,36 +36,37 @@ def addTerm():
     
 
 def QuizA():
+    # creates new window
     QuizAWindow = Toplevel()
     QuizAWindow.title("Quiz Using Terms/Questions")
     QuizAWindow.iconbitmap('C:/python/sqal/sqal.ico')
+    QuizAWindow.geometry(windowSize)
 
     # used for random int
     num = len(terms)-1
 
-    #counter for rows
-    i = 1
-
     key_list = list(terms.keys())
     val_list = list(terms.values())
+
+    # creates label to store text variable
+    k = StringVar()
+    l = Label(QuizAWindow, textvariable=k)
+    l.grid(row=1, column=1, pady=20, padx=20)
     
     def generate():
         x = random.randint(0, num)
-        k = StringVar()
         k.set(key_list[x])
-        v = StringVar()
-        v.set(val_list[x])
-        l = Label(QuizAWindow, textvariable=k)
-        l.grid(row=1, column=1, pady=20, padx=20)
 
-        def reveal(v):
-            l.config(textvariable=v)
+        def reveal():
+            k.set(val_list[x])
 
-        revealButton = Button(QuizAWindow, text="Reveal", command= lambda: reveal(v))
+        revealButton = Button(QuizAWindow, text="Reveal", command=reveal)
         revealButton.grid(row=2,column=1, columnspan=1,padx=10,pady=10)
 
+    # generates first term on open
     generate()
 
+    # on window buttons
     nextButton = Button(QuizAWindow, text="Next", command=generate)
     nextButton.grid(row=2, column=2, columnspan=1, padx=10, pady=10)
     
@@ -61,36 +74,38 @@ def QuizA():
     closeButton.grid(row=3,column=2,columnspan=1,padx=10,pady=10)
 
 def QuizB():
+    # creates new window
     QuizBWindow = Toplevel()
     QuizBWindow.title("Quiz Using Terms/Questions")
     QuizBWindow.iconbitmap('C:/python/sqal/sqal.ico')
+    QuizBWindow.geometry(windowSize)
 
     # used for random int
     num = len(terms)-1
 
-    #counter for rows
-    i = 1
-
     key_list = list(terms.keys())
     val_list = list(terms.values())
+
+    # creates label to store text variable
+    k = StringVar()
+    l = Label(QuizBWindow, textvariable=k)
+    l.grid(row=1, column=1, pady=20, padx=20)
     
     def generate():
         x = random.randint(0, num)
-        k = StringVar()
-        k.set(key_list[x])
-        v = StringVar()
-        v.set(val_list[x])
-        l = Label(QuizBWindow, textvariable=v)
-        l.grid(row=1, column=1, pady=20, padx=20)
+        k.set(val_list[x])
+        
+        def reveal():
+            k.set(key_list[x])
 
-        def reveal(k):
-            l.config(textvariable=k)
-
-        revealButton = Button(QuizBWindow, text="Reveal", command= lambda: reveal(k))
+        revealButton = Button(QuizBWindow, text="Reveal", command=reveal)
         revealButton.grid(row=2,column=1, columnspan=1,padx=10,pady=10)
 
+
+    # generates first definition on open
     generate()
 
+    # on window buttons
     nextButton = Button(QuizBWindow, text="Next", command=generate)
     nextButton.grid(row=2, column=2, columnspan=1, padx=10, pady=10)
     
@@ -102,6 +117,7 @@ def showAll():
     showAllWindow = Toplevel()
     showAllWindow.title("All Terms Entered")
     showAllWindow.iconbitmap('C:/python/sqal/sqal.ico')
+    showAllWindow.geometry(windowSize)
 
     #counter for rows
     i = 1
@@ -126,7 +142,7 @@ def rootExit():
 	exitLabel.grid(row=0,column=0,columnspan=3,pady=20,padx=20)
 	exitButtonFinal = Button(closeWindow, text="Exit",command=root.destroy)
 	exitButtonFinal.grid(row=2,column=3,columnspan=1,pady=10,padx=10)
-	backToProgramButton = Button(closeWindow, text="Go back to my quiz",command=closeWindow.destroy)
+	backToProgramButton = Button(closeWindow, text="Go back to my Quiz",command=closeWindow.destroy)
 	backToProgramButton.grid(row=2,column=2,columnspan=1,pady=10,padx=10)
 
 
@@ -138,15 +154,18 @@ root.title("Sir Quiz-A-Lot")
 root.iconbitmap('C:/python/sqal/sqal.ico')
 
 
+
 ## ATTEMPT at making a file toolbar to save and open files.  doesn't work yet
-#menu bar
-#menu = Menu(root)
-#root.config(menu=menu)
-#subMenu = Menu(menu)
-#menu.add_cascade(label="File", menu=subMenu)
-#subMenu.add_command(label="New Project...", command=doNothing)
-#subMenu.add_command(label="Save", command = doNothing)
-#subMenu.add_separator()
+menu = Menu(root)
+root.config(menu=menu)
+
+filemenu = Menu(menu)
+menu.add_cascade(label="File", menu=filemenu)
+filemenu.add_command(label="New", command=callback)
+filemenu.add_command(label="Open...", command=callback)
+filemenu.add_command(label="Save Quiz", command=callback)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=rootExit)
 
 #title at top of GUI     
 introLabel = Label(root,
@@ -191,37 +210,42 @@ defEntry.grid(row = 3, column = 1,
 #Add to quiz button
 addToQuizButton = Button(root,
                          text = "Add to Quiz",
-                         padx = 10, pady = 10,
+                         height = 2,
+                         width = 30,
                          command=addTerm)
-addToQuizButton.grid(row = 4, columnspan = 3, column = 1)
+addToQuizButton.grid(row = 4, column = 2)
 
 #Quiz me using Terms button
 quizTermsButton = Button(root,
                          text = "Quiz me using Terms/Questions",
-                         padx = 10, pady = 10,
+                         height = 2,
+                         width = 30,
                          command=QuizA)
-quizTermsButton.grid(row = 5, columnspan = 3, column = 1)
+quizTermsButton.grid(row = 5, column = 1)
 
 #Quiz me using Defintions button
 quizDefsButton = Button(root,
                         text = "Quiz Me using Definitions/Answers",
-                        padx = 10, pady = 10,
+                        height = 2,
+                        width = 30,
                         command=QuizB)
-quizDefsButton.grid(row = 6, columnspan = 3, column = 1)
+quizDefsButton.grid(row = 5, column = 2)
 
 #Show All Entries button
 showAllButton = Button(root,
                        text = "Show All Quiz Entries",
-                       padx = 10, pady = 10,
-                       command=showAll)
-showAllButton.grid(row = 7, columnspan = 3, column = 1)
+                       command=showAll,
+                       height = 2,
+                       width = 30)
+showAllButton.grid(row = 5, column = 3)
 
 #Exit button
 exitButton = Button(root,
                        text = "Exit",
-                       padx = 10, pady = 10,
+                       height = 2,
+                       width = 30,
                        command=rootExit)
-exitButton.grid(row = 8, columnspan = 3, column = 1)
+exitButton.grid(row = 8, column = 2)
 
 
 
